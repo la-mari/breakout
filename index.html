@@ -14,6 +14,9 @@
 
 	var pelota;
 	var paddle;
+	var ladrillo;
+	var newLadrillo;
+	var ladrilloInfo;
 
 	function preload() {
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -22,6 +25,7 @@
 		game.stage.backgroundColor = '#eee';
 		game.load.image('pelota', 'assets/pelota.png');
 		game.load.image('paleta', 'assets/paleta.png');
+		game.load.image('ladrillo', 'assets/ladrillo.png');
 
 	}
 
@@ -37,6 +41,16 @@
 		pelota.body.collideWorldBounds = true;
 		pelota.body.bounce.set(1);
 		pelota.body.velocity.set(150, -150);
+
+		//no ball collision at bottom edge of screen, lose game
+		game.physics.arcade.checkCollision.down = false;
+		pelota.checkWorldBounds = true;
+		pelota.events.onOutOfBounds.add(function(){
+			alert('GAME OVER!');
+			//click alert to reload game
+			location.reload();
+		}, this);
+
 		//render the paddle
 		paleta = game.add.sprite(game.world.width*0.5, game.world.height-5, 'paleta');
 		paleta.anchor.set(0.5,1);
@@ -44,6 +58,8 @@
 		game.physics.enable(paleta, Phaser.Physics.ARCADE);
 		//make paddle immoveable so it won't move when ball hits it
 		paleta.body.immovable = true;
+
+		initLadrillos();
 	}
 
 	function update() {
@@ -53,6 +69,40 @@
 		// pelota.x += 1;
 		// pelota.y += 1;
 	}
+
+	//draw ladrillos
+	function initLadrillos(){
+		ladrilloInfo = {
+			width: 50,
+			height: 20,
+			count: {
+				row: 7,
+				col: 3
+			},
+			offset: {
+				top: 50,
+				left: 60
+			},
+			padding: 10
+		}
+		//add group to create the ladrillos
+		ladrillos = game.add.group();
+		for(i=0; i<ladrilloInfo.count.col; i++){
+			for(j=0; j<ladrilloInfo.count.row; j++){
+				var ladrilloX = 0;
+				var ladrilloY = 0;
+				newLadrillo = game.add.sprite(ladrilloX, ladrilloY, 'ladrillo');
+				game.physics.enable(newLadrillo, Phaser.Physics.ARCADE);
+				newLadrillo.body.immovable = true;
+				newLadrillo.anchor.set(0.5);
+				ladrillos.add(newLadrillo);
+			}
+		}
+	}
+
+
+
+
 
 
 </script>
