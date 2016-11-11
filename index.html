@@ -8,17 +8,26 @@
 </head>
 <body>
 <script>
-	var game = new Phaser.Game(480, 320, Phase.AUTO, null, {
+	var game = new Phaser.Game(480, 320, Phaser.AUTO, null, {
 		preload: preload, create: create, update: update
 	});
+
+	var pelota;
+
 	function preload() {
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		game.scale.pageAlignHorizontally = true;
 		game.scale.pageAlignVertically = true;
 		game.stage.backgroundColor = '#eee';
+		game.load.image('pelota', 'assets/pelota.png')
 	}
-	function create() {}
+
+	function create() {
+		pelota = game.add.sprite(50, 50, 'pelota');
+	}
+	
 	function update() {}
+
 </script>
 
 </body>
