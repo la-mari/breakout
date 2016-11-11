@@ -111,6 +111,19 @@
 		ladrillo.kill();
 		score += 10;
 		scoreText.setText('Points: '+score);
+		//win scenario
+		var count_alive = 0;
+		
+		//loop through ladrillos and check if each brick 'alive'
+		for(i=0; i<ladrillos.children.length; i++){
+			if(ladrillos.children[i].alive === true){
+				count_alive++;
+			}
+		}
+		if(count_alive == 0) {
+			alert('HOORAY YOU WIN!');
+			location.reload();
+		}
 	}
 
 </script>
