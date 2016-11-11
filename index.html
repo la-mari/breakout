@@ -13,26 +13,43 @@
 	});
 
 	var pelota;
+	var paddle;
 
 	function preload() {
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		game.scale.pageAlignHorizontally = true;
 		game.scale.pageAlignVertically = true;
 		game.stage.backgroundColor = '#eee';
-		game.load.image('pelota', 'assets/pelota.png')
+		game.load.image('pelota', 'assets/pelota.png');
+		game.load.image('paleta', 'assets/paleta.png');
+
 	}
 
 	function create() {
 		//initialize the arcade physics engine
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		pelota = game.add.sprite(50, 50, 'pelota');
+		//position the ball
+		pelota = game.add.sprite(game.world.width*0.5, game.world.height-25, 'pelota');
+		pelota.anchor.set(0.5);
+
 		game.physics.enable(pelota, Phaser.Physics.ARCADE);
+		//set walls as boundaries so ball stops at wall
 		pelota.body.collideWorldBounds = true;
 		pelota.body.bounce.set(1);
-		pelota.body.velocity.set(150, 150);
+		pelota.body.velocity.set(150, -150);
+		//render the paddle
+		paleta = game.add.sprite(game.world.width*0.5, game.world.height-5, 'paleta');
+		paleta.anchor.set(0.5,1);
+		//enable physics so ball can hit paddle
+		game.physics.enable(paleta, Phaser.Physics.ARCADE);
+		//make paddle immoveable so it won't move when ball hits it
+		paleta.body.immovable = true;
 	}
 
 	function update() {
+		game.physics.arcade.collide(pelota, paleta);
+		//set paddle position to input positions
+		paleta.x = game.input.x || game.world.width*0.5;
 		// pelota.x += 1;
 		// pelota.y += 1;
 	}
