@@ -66,6 +66,9 @@
 		game.physics.arcade.collide(pelota, paleta);
 		//set paddle position to input positions
 		paleta.x = game.input.x || game.world.width*0.5;
+
+		//add collision detection
+		game.physics.arcade.collide(pelota, ladrillos, pelotaPegaLadrillo);
 		// pelota.x += 1;
 		// pelota.y += 1;
 	}
@@ -76,8 +79,8 @@
 			width: 50,
 			height: 20,
 			count: {
-				row: 7,
-				col: 3
+				col: 7,
+				row: 4
 			},
 			offset: {
 				top: 50,
@@ -87,8 +90,8 @@
 		}
 		//add group to create the ladrillos
 		ladrillos = game.add.group();
-		for(i=0; i<ladrilloInfo.count.col; i++){
-			for(j=0; j<ladrilloInfo.count.row; j++){
+		for(i=0; i<ladrilloInfo.count.row; i++){
+			for(j=0; j<ladrilloInfo.count.col; j++){
 				var ladrilloX = (j*(ladrilloInfo.width+ladrilloInfo.padding))+ladrilloInfo.offset.left;
 				var ladrilloY = (i*(ladrilloInfo.height+ladrilloInfo.padding))+ladrilloInfo.offset.top;
 				newLadrillo = game.add.sprite(ladrilloX, ladrilloY, 'ladrillo');
@@ -100,10 +103,9 @@
 		}
 	}
 
-
-
-
-
+	function pelotaPegaLadrillo(pelota, ladrillo){
+		ladrillo.kill();
+	}
 
 </script>
 
