@@ -19,13 +19,16 @@
 	var ladrilloInfo;
 	var scoreText;
 	var score = 0;
+	var lives = 3;
+	var livesText;
+	var lifeLostText;
 
 	function preload() {
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		game.scale.pageAlignHorizontally = true;
 		game.scale.pageAlignVertically = true;
 		game.stage.backgroundColor = '#eee';
-		game.load.image('pelota', 'assets/pelota.png');
+		game.load.image('pelota', 'img/pelota.png');
 		game.load.image('paleta', 'assets/paleta.png');
 		game.load.image('ladrillo', 'assets/ladrillo.png');
 
@@ -47,11 +50,7 @@
 		//no ball collision at bottom edge of screen, lose game
 		game.physics.arcade.checkCollision.down = false;
 		pelota.checkWorldBounds = true;
-		pelota.events.onOutOfBounds.add(function(){
-			alert('GAME OVER!');
-			//click alert to reload game
-			location.reload();
-		}, this);
+		pelota.events.onOutOfBounds.add(ballLeaves, this);
 
 		//render the paddle
 		paleta = game.add.sprite(game.world.width*0.5, game.world.height-5, 'paleta');
@@ -62,8 +61,13 @@
 		paleta.body.immovable = true;
 
 		initLadrillos();
-
-		scoreText = game.add.text(5, 5, 'Points: 0', {font: '18px Arial', fill: '#0095DD'});
+		textStyle = { font: '18px Arial', fill: '#0095DD' };
+		scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
+		livesText = game.add.text(game.world.width-5, 5, 'Lives: '+lives, textStyle);
+		livesText.anchor.set(1,0);
+		lifeLostText = game.add.text(game.world.width*0.5, game.world.height*0.6, 'Life lost, click to continue', textStyle);
+		lifeLostText.anchor.set(0.5);
+		lifeLostText.visible = false;
 	}
 
 	function update() {
@@ -113,7 +117,7 @@
 		scoreText.setText('Points: '+score);
 		//win scenario
 		var count_alive = 0;
-		
+
 		//loop through ladrillos and check if each brick 'alive'
 		for(i=0; i<ladrillos.children.length; i++){
 			if(ladrillos.children[i].alive === true){
@@ -125,6 +129,23 @@
 			location.reload();
 		}
 	}
+
+	function ballLeaves(){
+			lives--;
+			if(lives){
+				livesText.setText('Lives: '+lives);
+				lifeLostText.visible = true;
+				pelota.reset(game.world.width*0.5, game.world.height-25);
+				paleta.reset(game.world.width*0.5, game.world.height-5);
+				game.input.onDown.addOnce(function(){
+					lifeLostText.visible = false;
+					pelota.body.velocity.set(150, -150);
+				}, this);
+			} else {
+				alert('GAME OVER!');
+				location.reload();
+			}
+		}
 
 </script>
 
