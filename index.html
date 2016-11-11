@@ -17,6 +17,8 @@
 	var ladrillo;
 	var newLadrillo;
 	var ladrilloInfo;
+	var scoreText;
+	var score = 0;
 
 	function preload() {
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -60,6 +62,8 @@
 		paleta.body.immovable = true;
 
 		initLadrillos();
+
+		scoreText = game.add.text(5, 5, 'Points: 0', {font: '18px Arial', fill: '#0095DD'});
 	}
 
 	function update() {
@@ -105,6 +109,8 @@
 
 	function pelotaPegaLadrillo(pelota, ladrillo){
 		ladrillo.kill();
+		score += 10;
+		scoreText.setText('Points: '+score);
 	}
 
 </script>
