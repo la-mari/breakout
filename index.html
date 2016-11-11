@@ -89,8 +89,8 @@
 		ladrillos = game.add.group();
 		for(i=0; i<ladrilloInfo.count.col; i++){
 			for(j=0; j<ladrilloInfo.count.row; j++){
-				var ladrilloX = 0;
-				var ladrilloY = 0;
+				var ladrilloX = (j*(ladrilloInfo.width+ladrilloInfo.padding))+ladrilloInfo.offset.left;
+				var ladrilloY = (i*(ladrilloInfo.height+ladrilloInfo.padding))+ladrilloInfo.offset.top;
 				newLadrillo = game.add.sprite(ladrilloX, ladrilloY, 'ladrillo');
 				game.physics.enable(newLadrillo, Phaser.Physics.ARCADE);
 				newLadrillo.body.immovable = true;
