@@ -23,10 +23,18 @@
 	}
 
 	function create() {
+		//initialize the arcade physics enginer
+		game.physics.startSystem(Phaser.Physics.ARCADE);
 		pelota = game.add.sprite(50, 50, 'pelota');
+		game.physics.enable(pelota, Phaser.Physics.ARCADE);
+		pelota.body.velocity.set(150, 150);
 	}
-	
-	function update() {}
+
+	function update() {
+		// pelota.x += 1;
+		// pelota.y += 1;
+	}
+
 
 </script>
 
